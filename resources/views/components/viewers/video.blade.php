@@ -6,7 +6,7 @@ Variables:
 - $item: The FileSystemItem model (optional)
 --}}
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
     $url = $url ?? null;
     $item = $item ?? null;
     // Create a unique key to force Alpine re-initialization when URL changes

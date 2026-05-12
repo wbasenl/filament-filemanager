@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\FileTypes;
+namespace Wbasenl\MwguerraFileManager\FileTypes;
 
 /**
  * Fallback file type for unknown/unsupported files.

@@ -1,7 +1,7 @@
 <?php
 
-use MWGuerra\FileManager\Filament\Pages\SchemaExample;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Pages\SchemaExample;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     $this->app['config']->set('filemanager.model', FileSystemItem::class);

@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Policies;
+namespace Wbasenl\MwguerraFileManager\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;

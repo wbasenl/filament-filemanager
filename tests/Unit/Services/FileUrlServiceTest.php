@@ -1,6 +1,6 @@
 <?php
 
-use MWGuerra\FileManager\Services\FileUrlService;
+use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 beforeEach(function () {
     $this->service = new FileUrlService();

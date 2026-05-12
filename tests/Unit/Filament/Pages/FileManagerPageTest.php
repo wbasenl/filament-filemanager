@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Filament\Pages\FileManager;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Pages\FileManager;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     Storage::fake('testing');

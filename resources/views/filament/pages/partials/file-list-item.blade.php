@@ -1,6 +1,6 @@
 {{-- File/Folder Row for List View --}}
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\FileManager\Enums\FileManagerIcon;
     $itemId = $item->getIdentifier();
     $itemName = $item->getName();
     $isReadOnly = $isReadOnly ?? false;

@@ -1,8 +1,8 @@
 <?php
 
-namespace MWGuerra\FileManager\FileTypes;
+namespace Wbasenl\MwguerraFileManager\FileTypes;
 
-use MWGuerra\FileManager\Contracts\FileTypeContract;
+use Wbasenl\MwguerraFileManager\Contracts\FileTypeContract;
 
 /**
  * Abstract base class for file types.

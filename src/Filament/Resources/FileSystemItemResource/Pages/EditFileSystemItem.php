@@ -1,10 +1,10 @@
 <?php
 
-namespace MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages;
+namespace Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages;
 
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource;
 
 class EditFileSystemItem extends EditRecord
 {

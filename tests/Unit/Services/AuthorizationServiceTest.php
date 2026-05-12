@@ -3,7 +3,7 @@
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Log;
-use MWGuerra\FileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
 
 beforeEach(function () {
     // Disable authorization by default for easier testing
@@ -244,7 +244,7 @@ describe('authorize', function () {
 
 describe('custom policy', function () {
     it('uses custom policy class from config', function () {
-        config()->set('filemanager.authorization.policy', \MWGuerra\FileManager\Policies\FileSystemItemPolicy::class);
+        config()->set('filemanager.authorization.policy', \Wbasenl\MwguerraFileManager\Policies\FileSystemItemPolicy::class);
 
         $service = new AuthorizationService();
 

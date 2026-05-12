@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use MWGuerra\FileManager\Models\FileSystemItem as BaseFileSystemItem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem as BaseFileSystemItem;
 
 /**
  * Application-specific FileSystemItem model.

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     // Create local source folder

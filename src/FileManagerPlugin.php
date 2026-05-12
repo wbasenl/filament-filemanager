@@ -1,21 +1,20 @@
 <?php
 
-namespace MWGuerra\FileManager;
+namespace Wbasenl\MwguerraFileManager;
 
 use BackedEnum;
-use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View;
-use MWGuerra\FileManager\Enums\FileManagerIcon;
-use MWGuerra\FileManager\Filament\Pages\EmbedConfigTest;
-use MWGuerra\FileManager\Filament\Pages\FileManager;
-use MWGuerra\FileManager\Filament\Pages\FileSystem;
-use MWGuerra\FileManager\Filament\Pages\SchemaExample;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource;
+use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
+use Wbasenl\MwguerraFileManager\Filament\Pages\EmbedConfigTest;
+use Wbasenl\MwguerraFileManager\Filament\Pages\FileManager;
+use Wbasenl\MwguerraFileManager\Filament\Pages\FileSystem;
+use Wbasenl\MwguerraFileManager\Filament\Pages\SchemaExample;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource;
 
 class FileManagerPlugin implements Plugin
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Filament\Pages;
+namespace Wbasenl\MwguerraFileManager\Filament\Pages;
 
 use BackedEnum;
 use Filament\Notifications\Notification;
@@ -8,15 +8,18 @@ use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\WithFileUploads;
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Traits\DetectsS3TempUploads;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
-use MWGuerra\FileManager\Contracts\FileTypeContract;
-use MWGuerra\FileManager\FileManagerPlugin;
-use MWGuerra\FileManager\FileTypeRegistry;
-use MWGuerra\FileManager\Services\AuthorizationService;
+use Throwable;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileTypeContract;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\FileTypeRegistry;
+use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Services\FileSecurityService;
+use Wbasenl\MwguerraFileManager\Traits\DetectsS3TempUploads;
 
 class FileManager extends Page
 {
@@ -53,7 +56,7 @@ class FileManager extends Page
     {
         try {
             return FileManagerPlugin::get()->getFileManagerNavigationGroup();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return config('filemanager.file_manager.navigation.group', 'FileManager');
         }
     }
@@ -99,7 +102,7 @@ class FileManager extends Page
     }
 
     // State properties - using string identifiers for flexibility
-    #[\Livewire\Attributes\Url(as: 'path')]
+    #[Url(as: 'path')]
     public ?string $currentPath = null;
     public string $viewMode = 'grid';
     public array $selectedItems = [];
@@ -933,7 +936,7 @@ class FileManager extends Page
             return;
         }
 
-        $security = app(\MWGuerra\FileManager\Services\FileSecurityService::class);
+        $security = app(FileSecurityService::class);
         $uploadCount = 0;
         $errors = [];
 

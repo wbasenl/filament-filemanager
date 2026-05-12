@@ -1,9 +1,9 @@
 <?php
 
-namespace MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages;
+namespace Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages;
 
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource;
 use Filament\Resources\Pages\CreateRecord;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource;
 
 class CreateFileSystemItem extends CreateRecord
 {

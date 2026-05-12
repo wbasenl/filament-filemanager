@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Livewire;
+namespace Wbasenl\MwguerraFileManager\Livewire;
 
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
@@ -8,13 +8,14 @@ use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Traits\DetectsS3TempUploads;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
-use MWGuerra\FileManager\Contracts\FileTypeContract;
-use MWGuerra\FileManager\FileTypeRegistry;
-use MWGuerra\FileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileTypeContract;
+use Wbasenl\MwguerraFileManager\FileTypeRegistry;
+use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Services\FileSecurityService;
+use Wbasenl\MwguerraFileManager\Traits\DetectsS3TempUploads;
 
 /**
  * Embeddable File Manager Livewire component.
@@ -640,7 +641,7 @@ class EmbeddedFileManager extends Component
             return;
         }
 
-        $security = app(\MWGuerra\FileManager\Services\FileSecurityService::class);
+        $security = app(FileSecurityService::class);
         $uploadCount = 0;
         $errors = [];
         $parentPath = $this->currentPath;

@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Enums;
+namespace Wbasenl\MwguerraFileManager\Enums;
 
 enum FileSystemItemType: string
 {

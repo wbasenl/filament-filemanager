@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     $this->testPath = sys_get_temp_dir() . '/filemanager-rebuild-' . uniqid();

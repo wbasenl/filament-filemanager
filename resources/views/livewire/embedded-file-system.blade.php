@@ -1,6 +1,6 @@
 {{-- EmbeddedFileSystem - Read-only file browser --}}
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
 @endphp
 <div class="fi-embedded-file-manager border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden" style="height: {{ $height }};">
     <div class="flex flex-col h-full" x-data="{}">

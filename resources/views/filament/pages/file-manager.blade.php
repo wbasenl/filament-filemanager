@@ -1,5 +1,5 @@
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\FileManager\Enums\FileManagerIcon;
 @endphp
 <x-filament-panels::page>
     @push('styles')

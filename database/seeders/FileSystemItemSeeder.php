@@ -1,11 +1,11 @@
 <?php
 
-namespace MWGuerra\FileManager\Database\Seeders;
+namespace Wbasenl\MwguerraFileManager\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use MWGuerra\FileManager\Enums\FileSystemItemType;
-use MWGuerra\FileManager\Enums\FileType;
+use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
+use Wbasenl\MwguerraFileManager\Enums\FileType;
 
 class FileSystemItemSeeder extends Seeder
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace MWGuerra\FileManager\Http\Controllers;
+namespace Wbasenl\MwguerraFileManager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Services\AuthorizationService;
-use MWGuerra\FileManager\Services\FileUrlService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 /**
  * Controller for streaming files from storage.

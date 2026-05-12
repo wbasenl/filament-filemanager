@@ -2,11 +2,11 @@
 
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages\CreateFileSystemItem;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages\EditFileSystemItem;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages\ListFileSystemItems;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages\CreateFileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages\EditFileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages\ListFileSystemItems;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     $this->app['config']->set('filemanager.model', FileSystemItem::class);

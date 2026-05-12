@@ -1,12 +1,13 @@
 <?php
 
-namespace MWGuerra\FileManager\Console\Commands;
+namespace Wbasenl\MwguerraFileManager\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Enums\FileSystemItemType;
-use MWGuerra\FileManager\Enums\FileType;
+use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
+use Wbasenl\MwguerraFileManager\Enums\FileType;
 
 class RebuildFileSystemItemsCommand extends Command
 {
@@ -50,7 +51,7 @@ class RebuildFileSystemItemsCommand extends Command
         // Validate disk exists (use directories() which works with S3-compatible storage)
         try {
             Storage::disk($disk)->directories('');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Disk '{$disk}' is not configured or accessible.");
             $this->error($e->getMessage());
             return self::FAILURE;
@@ -118,7 +119,7 @@ class RebuildFileSystemItemsCommand extends Command
 
             return self::SUCCESS;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $this->error('An error occurred during rebuild:');
             $this->error($e->getMessage());
@@ -184,7 +185,7 @@ class RebuildFileSystemItemsCommand extends Command
             try {
                 $size = $storage->size($file);
                 $mimeType = $storage->mimeType($file);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->warn("    Could not get file info: {$e->getMessage()}");
             }
 

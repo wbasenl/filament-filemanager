@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Contracts\Support\Htmlable;
-use MWGuerra\FileManager\Enums\FileManagerIcon;
+use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
 
 if (! function_exists('fmicon')) {
     /**

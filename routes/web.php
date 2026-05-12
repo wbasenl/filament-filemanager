@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use MWGuerra\FileManager\Http\Controllers\FileStreamController;
+use Wbasenl\MwguerraFileManager\Http\Controllers\FileStreamController;
 
 /*
 |--------------------------------------------------------------------------

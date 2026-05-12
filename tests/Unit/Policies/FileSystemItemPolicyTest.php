@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use MWGuerra\FileManager\Policies\FileSystemItemPolicy;
+use Wbasenl\MwguerraFileManager\Policies\FileSystemItemPolicy;
 
 beforeEach(function () {
     $this->policy = new FileSystemItemPolicy();

@@ -1,9 +1,9 @@
 <?php
 
 use Filament\Actions\CreateAction;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages\ListFileSystemItems;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages\ListFileSystemItems;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     $this->app['config']->set('filemanager.model', FileSystemItem::class);

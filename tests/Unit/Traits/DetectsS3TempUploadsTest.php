@@ -1,6 +1,6 @@
 <?php
 
-use MWGuerra\FileManager\Traits\DetectsS3TempUploads;
+use Wbasenl\MwguerraFileManager\Traits\DetectsS3TempUploads;
 
 // Create a test class that uses the trait
 class TestDetectsS3TempUploads

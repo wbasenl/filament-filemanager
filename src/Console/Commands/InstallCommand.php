@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Console\Commands;
+namespace Wbasenl\MwguerraFileManager\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -152,7 +152,7 @@ class InstallCommand extends Command
         $this->line('<fg=cyan>Next steps:</>');
         $this->line('  1. Register the plugin in your Panel Provider:');
         $this->newLine();
-        $this->line('     <fg=gray>use MWGuerra\FileManager\FileManagerPlugin;</>');
+        $this->line('     <fg=gray>use Wbasenl\MwguerraFileManager\FileManagerPlugin;</>');
         $this->newLine();
         $this->line('     <fg=gray>->plugins([</>');
         $this->line('     <fg=gray>    FileManagerPlugin::make(),</>');

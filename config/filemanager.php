@@ -91,22 +91,22 @@ return [
     |
     | This is the model that represents files and folders in your application.
     | Only used when mode is 'database'.
-    | It must implement the MWGuerra\FileManager\Contracts\FileSystemItemInterface.
+    | It must implement the Wbasenl\MwguerraFileManager\Contracts\FileSystemItemInterface.
     |
     | The package provides a default model. You can extend it or create your own:
     |
     | Option 1: Use the package model directly (default)
-    | 'model' => \MWGuerra\FileManager\Models\FileSystemItem::class,
+    | 'model' => \Wbasenl\MwguerraFileManager\Models\FileSystemItem::class,
     |
     | Option 2: Extend the package model in your app
     | 'model' => \App\Models\FileSystemItem::class,
-    | // where App\Models\FileSystemItem extends MWGuerra\FileManager\Models\FileSystemItem
+    | // where App\Models\FileSystemItem extends Wbasenl\MwguerraFileManager\Models\FileSystemItem
     |
     | Option 3: Create your own model implementing FileSystemItemInterface
     | 'model' => \App\Models\CustomFileModel::class,
     |
     */
-    'model' => \MWGuerra\FileManager\Models\FileSystemItem::class,
+    'model' => \Wbasenl\MwguerraFileManager\Models\FileSystemItem::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -278,7 +278,7 @@ return [
         ],
 
         // The policy class to use (can be overridden with custom implementation)
-        'policy' => \MWGuerra\FileManager\Policies\FileSystemItemPolicy::class,
+        'policy' => \Wbasenl\MwguerraFileManager\Policies\FileSystemItemPolicy::class,
     ],
 
     /*
@@ -313,7 +313,7 @@ return [
     | Custom types can be added by listing their fully-qualified class names.
     |
     | Each custom type class must implement FileTypeContract or extend
-    | AbstractFileType from MWGuerra\FileManager\FileTypes.
+    | AbstractFileType from Wbasenl\MwguerraFileManager\FileTypes.
     |
     | Example of registering custom types:
     |

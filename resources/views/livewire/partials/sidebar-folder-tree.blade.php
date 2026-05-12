@@ -1,6 +1,6 @@
 {{-- Recursive folder tree component for sidebar navigation --}}
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
     $isReadOnly = $isReadOnly ?? false;
 @endphp
 @foreach($folders as $folder)

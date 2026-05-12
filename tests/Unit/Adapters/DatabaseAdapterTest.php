@@ -2,9 +2,9 @@
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Adapters\DatabaseAdapter;
-use MWGuerra\FileManager\Adapters\DatabaseItem;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Adapters\DatabaseAdapter;
+use Wbasenl\MwguerraFileManager\Adapters\DatabaseItem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     Storage::fake('testing');

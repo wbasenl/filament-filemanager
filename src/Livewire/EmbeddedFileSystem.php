@@ -1,9 +1,10 @@
 <?php
 
-namespace MWGuerra\FileManager\Livewire;
+namespace Wbasenl\MwguerraFileManager\Livewire;
 
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
+use Illuminate\Contracts\View\View;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
 
 /**
  * Embeddable File System Livewire component (read-only).
@@ -51,7 +52,7 @@ class EmbeddedFileSystem extends EmbeddedFileManager
         return true;
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): View
     {
         return view('filemanager::livewire.embedded-file-system');
     }

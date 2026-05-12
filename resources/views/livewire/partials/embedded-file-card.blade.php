@@ -1,6 +1,6 @@
 {{-- File/Folder Card for Embedded Grid View --}}
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
     $itemId = $item->getIdentifier();
     $itemName = $item->getName();
     $isReadOnly = $isReadOnly ?? false;

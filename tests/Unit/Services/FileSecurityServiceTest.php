@@ -2,7 +2,7 @@
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-use MWGuerra\FileManager\Services\FileSecurityService;
+use Wbasenl\MwguerraFileManager\Services\FileSecurityService;
 
 beforeEach(function () {
     $this->service = new FileSecurityService();

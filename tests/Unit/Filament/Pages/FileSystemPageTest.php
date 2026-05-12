@@ -1,7 +1,7 @@
 <?php
 
-use MWGuerra\FileManager\Filament\Pages\FileSystem;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Filament\Pages\FileSystem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     $this->testPath = sys_get_temp_dir() . '/filemanager-filesystem-unit-' . uniqid();

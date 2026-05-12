@@ -1,12 +1,13 @@
 <?php
 
-namespace MWGuerra\FileManager\Console\Commands;
+namespace Wbasenl\MwguerraFileManager\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
 
 class ListFilesCommand extends Command
 {
@@ -86,7 +87,7 @@ class ListFilesCommand extends Command
         // Validate disk exists (use directories() which works with S3-compatible storage)
         try {
             Storage::disk($disk)->directories('');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Disk '{$disk}' is not configured or accessible.");
             $this->error($e->getMessage());
             return self::FAILURE;
@@ -95,7 +96,7 @@ class ListFilesCommand extends Command
         // Get the adapter
         try {
             $adapter = $this->getAdapter($mode, $disk, $target);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Failed to initialize adapter: " . $e->getMessage());
             return self::FAILURE;
         }
@@ -127,7 +128,7 @@ class ListFilesCommand extends Command
             } else {
                 $this->listItems($adapter, $path, $type, $showHidden);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Failed to list items: " . $e->getMessage());
             return self::FAILURE;
         }

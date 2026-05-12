@@ -1,10 +1,11 @@
 <?php
 
-namespace MWGuerra\FileManager\Services;
+namespace Wbasenl\MwguerraFileManager\Services;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Log;
-use MWGuerra\FileManager\Policies\FileSystemItemPolicy;
+use Wbasenl\MwguerraFileManager\Policies\FileSystemItemPolicy;
 
 /**
  * Centralized authorization service for file manager operations.
@@ -130,7 +131,7 @@ class AuthorizationService
     /**
      * Authorize an action, throwing an exception if not allowed.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function authorize(string $ability, $item = null): void
     {
@@ -147,7 +148,7 @@ class AuthorizationService
         };
 
         if (!$allowed) {
-            throw new \Illuminate\Auth\Access\AuthorizationException(
+            throw new AuthorizationException(
                 "You are not authorized to {$ability} this resource."
             );
         }

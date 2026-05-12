@@ -1,8 +1,8 @@
 <?php
 
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Adapters\DatabaseAdapter;
-use MWGuerra\FileManager\Adapters\StorageAdapter;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Adapters\DatabaseAdapter;
+use Wbasenl\MwguerraFileManager\Adapters\StorageAdapter;
 
 it('creates storage adapter when mode is storage', function () {
     config()->set('filemanager.mode', 'storage');

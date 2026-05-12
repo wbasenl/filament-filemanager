@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Adapters\StorageItem;
+use Wbasenl\MwguerraFileManager\Adapters\StorageItem;
 
 beforeEach(function () {
     Storage::fake('testing');

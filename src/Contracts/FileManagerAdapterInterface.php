@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Contracts;
+namespace Wbasenl\MwguerraFileManager\Contracts;
 
 use Illuminate\Support\Collection;
 

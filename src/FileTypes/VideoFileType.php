@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\FileTypes;
+namespace Wbasenl\MwguerraFileManager\FileTypes;
 
 /**
  * File type for video files.

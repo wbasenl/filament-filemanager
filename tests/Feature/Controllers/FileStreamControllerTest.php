@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use MWGuerra\FileManager\Services\FileUrlService;
+use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 beforeEach(function () {
     // Set app key for signed URLs

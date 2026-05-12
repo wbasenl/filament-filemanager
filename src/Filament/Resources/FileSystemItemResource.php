@@ -1,25 +1,25 @@
 <?php
 
-namespace MWGuerra\FileManager\Filament\Resources;
+namespace Wbasenl\MwguerraFileManager\Filament\Resources;
 
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource\Pages;
-use MWGuerra\FileManager\Enums\FileSystemItemType;
-use MWGuerra\FileManager\Enums\FileType;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables;
 use Filament\Tables\Table;
-use MWGuerra\FileManager\FileManagerPlugin;
+use Throwable;
+use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
+use Wbasenl\MwguerraFileManager\Enums\FileType;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
 
 class FileSystemItemResource extends Resource
 {
@@ -49,7 +49,7 @@ class FileSystemItemResource extends Resource
     {
         try {
             return FileManagerPlugin::get()->getFileManagerNavigationGroup();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return config('filemanager.file_manager.navigation.group', 'FileManager');
         }
     }

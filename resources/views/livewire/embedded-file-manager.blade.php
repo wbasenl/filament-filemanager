@@ -1,5 +1,5 @@
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\FileManager\Enums\FileManagerIcon;
 @endphp
 <div class="fi-embedded-file-manager border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden" style="height: {{ $height }};">
     @once

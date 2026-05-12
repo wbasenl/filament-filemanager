@@ -2,8 +2,8 @@
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Adapters\StorageAdapter;
-use MWGuerra\FileManager\Adapters\StorageItem;
+use Wbasenl\MwguerraFileManager\Adapters\StorageAdapter;
+use Wbasenl\MwguerraFileManager\Adapters\StorageItem;
 
 beforeEach(function () {
     Storage::fake('testing');

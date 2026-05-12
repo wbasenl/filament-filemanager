@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Livewire\EmbeddedFileManager;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileManager;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     Storage::fake('testing');
@@ -599,7 +599,7 @@ describe('file type', function () {
 
         $fileType = $component->getFileTypeForItem($item);
 
-        expect($fileType)->toBeInstanceOf(\MWGuerra\FileManager\Contracts\FileTypeContract::class);
+        expect($fileType)->toBeInstanceOf(\Wbasenl\MwguerraFileManager\Contracts\FileTypeContract::class);
     });
 });
 
@@ -613,7 +613,7 @@ describe('preview file type property', function () {
 
         $fileType = $component->previewFileType;
 
-        expect($fileType)->toBeInstanceOf(\MWGuerra\FileManager\Contracts\FileTypeContract::class);
+        expect($fileType)->toBeInstanceOf(\Wbasenl\MwguerraFileManager\Contracts\FileTypeContract::class);
         expect($fileType->identifier())->toBe('text');
     });
 

@@ -1,5 +1,5 @@
 {
-    "name": "mwguerra/filemanager",
+    "name": "wbasenl/filemanager",
     "description": "A full-featured file manager package for Laravel and Filament v5 with dual operating modes, drag-and-drop uploads, S3/MinIO support, and comprehensive security features.",
     "keywords": [
         "laravel",
@@ -53,9 +53,9 @@
     },
     "autoload": {
         "psr-4": {
-            "MWGuerra\\FileManager\\": "src/",
-            "MWGuerra\\FileManager\\Database\\Factories\\": "database/factories/",
-            "MWGuerra\\FileManager\\Database\\Seeders\\": "database/seeders/"
+            "Wbasenl\\MwguerraFileManager\\": "src/",
+            "Wbasenl\\MwguerraFileManager\\Database\\Factories\\": "database/factories/",
+            "Wbasenl\\MwguerraFileManager\\Database\\Seeders\\": "database/seeders/"
         },
         "files": [
             "src/helpers.php"
@@ -63,13 +63,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "MWGuerra\\FileManager\\Tests\\": "tests/"
+            "Wbasenl\\MwguerraFileManager\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "MWGuerra\\FileManager\\FileManagerServiceProvider"
+                "Wbasenl\\MwguerraFileManager\\FileManagerServiceProvider"
             ]
         }
     },

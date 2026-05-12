@@ -1,9 +1,9 @@
 <?php
 
-namespace MWGuerra\FileManager\Adapters;
+namespace Wbasenl\MwguerraFileManager\Adapters;
 
 use InvalidArgumentException;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
 
 /**
  * Factory for creating file manager adapters.

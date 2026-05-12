@@ -1,10 +1,10 @@
 <?php
 
-namespace MWGuerra\FileManager\Schemas\Components;
+namespace Wbasenl\MwguerraFileManager\Schemas\Components;
 
 use Closure;
 use Filament\Schemas\Components\Livewire;
-use MWGuerra\FileManager\Livewire\EmbeddedFileSystem;
+use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileSystem;
 
 /**
  * Embeddable File System component for use in Filament schemas/forms.

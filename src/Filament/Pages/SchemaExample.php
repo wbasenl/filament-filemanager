@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Filament\Pages;
+namespace Wbasenl\MwguerraFileManager\Filament\Pages;
 
 use BackedEnum;
 use Filament\Actions\Action;
@@ -8,14 +8,16 @@ use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
+use Filament\Panel;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
-use MWGuerra\FileManager\FileManagerPlugin;
-use MWGuerra\FileManager\Schemas\Components\FileManagerEmbed;
-use MWGuerra\FileManager\Schemas\Components\FileSystemEmbed;
+use Throwable;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\Schemas\Components\FileManagerEmbed;
+use Wbasenl\MwguerraFileManager\Schemas\Components\FileSystemEmbed;
 
 class SchemaExample extends Page implements HasSchemas, HasActions
 {
@@ -52,12 +54,12 @@ class SchemaExample extends Page implements HasSchemas, HasActions
     {
         try {
             return FileManagerPlugin::get()->getFileManagerNavigationGroup();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return config('filemanager.file_manager.navigation.group', 'FileManager');
         }
     }
 
-    public static function getSlug(?\Filament\Panel $panel = null): string
+    public static function getSlug(?Panel $panel = null): string
     {
         return 'schema-example';
     }

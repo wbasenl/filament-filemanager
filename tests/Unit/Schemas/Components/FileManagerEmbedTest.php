@@ -1,7 +1,7 @@
 <?php
 
-use MWGuerra\FileManager\Livewire\EmbeddedFileManager;
-use MWGuerra\FileManager\Schemas\Components\FileManagerEmbed;
+use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileManager;
+use Wbasenl\MwguerraFileManager\Schemas\Components\FileManagerEmbed;
 
 describe('make', function () {
     it('creates instance with default component', function () {

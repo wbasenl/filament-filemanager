@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use MWGuerra\FileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
 
 describe('FileManagerPlugin navigation group', function () {
     beforeEach(function () {

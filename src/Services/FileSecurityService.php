@@ -1,7 +1,8 @@
 <?php
 
-namespace MWGuerra\FileManager\Services;
+namespace Wbasenl\MwguerraFileManager\Services;
 
+use finfo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 
@@ -171,7 +172,7 @@ class FileSecurityService
         }
 
         // Use finfo to detect MIME from file content (magic bytes)
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
         $detectedMime = $finfo->file($path);
 
         if ($detectedMime === false) {

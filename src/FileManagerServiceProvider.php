@@ -1,33 +1,33 @@
 <?php
 
-namespace MWGuerra\FileManager;
+namespace Wbasenl\MwguerraFileManager;
 
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
-use MWGuerra\FileManager\FileTypes\ArchiveFileType;
-use MWGuerra\FileManager\FileTypes\AudioFileType;
-use MWGuerra\FileManager\FileTypes\DocumentFileType;
-use MWGuerra\FileManager\FileTypes\ImageFileType;
-use MWGuerra\FileManager\FileTypes\OtherFileType;
-use MWGuerra\FileManager\FileTypes\PdfFileType;
-use MWGuerra\FileManager\FileTypes\TextFileType;
-use MWGuerra\FileManager\FileTypes\VideoFileType;
-use MWGuerra\FileManager\Livewire\EmbeddedFileManager;
-use MWGuerra\FileManager\Livewire\EmbeddedFileSystem;
-use MWGuerra\FileManager\Livewire\FileManagerSidebar;
-use MWGuerra\FileManager\Policies\FileSystemItemPolicy;
-use MWGuerra\FileManager\Console\Commands\FileSystemListCommand;
-use MWGuerra\FileManager\Console\Commands\InstallCommand;
-use MWGuerra\FileManager\Console\Commands\ListFilesCommand;
-use MWGuerra\FileManager\Console\Commands\RebuildFileSystemItemsCommand;
-use MWGuerra\FileManager\Console\Commands\UploadFolderCommand;
-use MWGuerra\FileManager\Services\AuthorizationService;
-use MWGuerra\FileManager\Services\FileSecurityService;
-use MWGuerra\FileManager\Services\FileUrlService;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Wbasenl\MwguerraFileManager\Console\Commands\FileSystemListCommand;
+use Wbasenl\MwguerraFileManager\Console\Commands\InstallCommand;
+use Wbasenl\MwguerraFileManager\Console\Commands\ListFilesCommand;
+use Wbasenl\MwguerraFileManager\Console\Commands\RebuildFileSystemItemsCommand;
+use Wbasenl\MwguerraFileManager\Console\Commands\UploadFolderCommand;
+use Wbasenl\MwguerraFileManager\FileTypes\ArchiveFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\AudioFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\DocumentFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\ImageFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\OtherFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\PdfFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\TextFileType;
+use Wbasenl\MwguerraFileManager\FileTypes\VideoFileType;
+use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileManager;
+use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileSystem;
+use Wbasenl\MwguerraFileManager\Livewire\FileManagerSidebar;
+use Wbasenl\MwguerraFileManager\Policies\FileSystemItemPolicy;
+use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Services\FileSecurityService;
+use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 class FileManagerServiceProvider extends PackageServiceProvider
 {

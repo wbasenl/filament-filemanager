@@ -1,10 +1,11 @@
 <?php
 
-namespace MWGuerra\FileManager\Enums;
+namespace Wbasenl\MwguerraFileManager\Enums;
 
+use Exception;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
-use MWGuerra\FileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
 
 /**
  * File Manager icons with built-in fallback SVGs.
@@ -16,7 +17,7 @@ use MWGuerra\FileManager\FileManagerPlugin;
  *
  * @example
  * // In Blade templates:
- * {!! \MWGuerra\FileManager\Enums\FileManagerIcon::Folder->render('w-4 h-4 text-primary-500') !!}
+ * {!! \Wbasenl\MwguerraFileManager\Enums\FileManagerIcon::Folder->render('w-4 h-4 text-primary-500') !!}
  *
  * // Or using the helper:
  * {!! fmicon('folder', 'w-4 h-4 text-primary-500') !!}
@@ -230,7 +231,7 @@ enum FileManagerIcon: string
             $result = new HtmlString($svg->toHtml());
 
             return true;
-        } catch (\Exception) {
+        } catch (Exception) {
             return false;
         }
     }

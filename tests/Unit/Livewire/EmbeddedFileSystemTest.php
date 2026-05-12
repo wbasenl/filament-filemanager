@@ -1,7 +1,7 @@
 <?php
 
-use MWGuerra\FileManager\Livewire\EmbeddedFileSystem;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileSystem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 beforeEach(function () {
     $this->testPath = sys_get_temp_dir() . '/filemanager-embedded-unit-' . uniqid();
@@ -567,7 +567,7 @@ describe('file type', function () {
         if ($file) {
             $fileType = $component->getFileTypeForItem($file);
 
-            expect($fileType)->toBeInstanceOf(\MWGuerra\FileManager\Contracts\FileTypeContract::class);
+            expect($fileType)->toBeInstanceOf(\Wbasenl\MwguerraFileManager\Contracts\FileTypeContract::class);
         }
     });
 });
@@ -580,7 +580,7 @@ describe('preview file type property', function () {
 
         $fileType = $component->previewFileType;
 
-        expect($fileType)->toBeInstanceOf(\MWGuerra\FileManager\Contracts\FileTypeContract::class);
+        expect($fileType)->toBeInstanceOf(\Wbasenl\MwguerraFileManager\Contracts\FileTypeContract::class);
         expect($fileType->identifier())->toBe('text');
     });
 
@@ -594,7 +594,7 @@ describe('preview file type property', function () {
 
 describe('inheritance', function () {
     it('extends EmbeddedFileManager', function () {
-        expect(is_subclass_of(EmbeddedFileSystem::class, \MWGuerra\FileManager\Livewire\EmbeddedFileManager::class))->toBeTrue();
+        expect(is_subclass_of(EmbeddedFileSystem::class, \Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileManager::class))->toBeTrue();
     });
 
     it('is a Livewire component', function () {

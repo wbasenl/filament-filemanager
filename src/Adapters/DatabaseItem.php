@@ -1,9 +1,9 @@
 <?php
 
-namespace MWGuerra\FileManager\Adapters;
+namespace Wbasenl\MwguerraFileManager\Adapters;
 
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
-use MWGuerra\FileManager\Contracts\FileSystemItemInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileSystemItemInterface;
 
 /**
  * Wrapper that adapts a FileSystemItemInterface (Eloquent model) to FileManagerItemInterface.

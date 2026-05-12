@@ -1,11 +1,11 @@
 <?php
 
-namespace MWGuerra\FileManager\Database\Factories;
+namespace Wbasenl\MwguerraFileManager\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use MWGuerra\FileManager\Enums\FileSystemItemType;
-use MWGuerra\FileManager\Enums\FileType;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
+use Wbasenl\MwguerraFileManager\Enums\FileType;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 class FileSystemItemFactory extends Factory
 {

@@ -1,7 +1,8 @@
 <?php
 
-namespace MWGuerra\FileManager\Services;
+namespace Wbasenl\MwguerraFileManager\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
@@ -49,7 +50,7 @@ class FileUrlService
                     $path,
                     now()->addMinutes($expirationMinutes)
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fall through to signed route
             }
         }
@@ -58,7 +59,7 @@ class FileUrlService
         if ($strategy === 'public_url') {
             try {
                 return Storage::disk($disk)->url($path);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Fall through to signed route
             }
         }

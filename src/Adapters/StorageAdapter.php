@@ -1,12 +1,17 @@
 <?php
 
-namespace MWGuerra\FileManager\Adapters;
+namespace Wbasenl\MwguerraFileManager\Adapters;
 
+use Exception;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
+use InvalidArgumentException;
+use RuntimeException;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 /**
  * Storage adapter for direct file system access.
@@ -36,7 +41,7 @@ class StorageAdapter implements FileManagerAdapterInterface
     /**
      * Get the storage instance.
      */
-    protected function storage(): \Illuminate\Contracts\Filesystem\Filesystem
+    protected function storage(): Filesystem
     {
         return Storage::disk($this->disk);
     }
@@ -44,7 +49,7 @@ class StorageAdapter implements FileManagerAdapterInterface
     /**
      * Normalize a path relative to root.
      *
-     * @throws \InvalidArgumentException If path traversal is detected
+     * @throws InvalidArgumentException If path traversal is detected
      */
     protected function normalizePath(?string $path): string
     {
@@ -116,7 +121,7 @@ class StorageAdapter implements FileManagerAdapterInterface
     /**
      * Validate that a path stays within the configured root.
      *
-     * @throws \InvalidArgumentException If path escapes root
+     * @throws InvalidArgumentException If path escapes root
      */
     protected function validatePathWithinRoot(string $path): void
     {
@@ -138,7 +143,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                 'ip' => request()->ip(),
                 'user_id' => auth()->id(),
             ]);
-            throw new \InvalidArgumentException('Path traversal attempt detected');
+            throw new InvalidArgumentException('Path traversal attempt detected');
         }
 
         // Check that there's either nothing after root, or a slash
@@ -151,7 +156,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                 'ip' => request()->ip(),
                 'user_id' => auth()->id(),
             ]);
-            throw new \InvalidArgumentException('Path traversal attempt detected');
+            throw new InvalidArgumentException('Path traversal attempt detected');
         }
     }
 
@@ -163,7 +168,7 @@ class StorageAdapter implements FileManagerAdapterInterface
         try {
             $this->normalizePath($path);
             return true;
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return false;
         }
     }
@@ -214,7 +219,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                 }
                 $items->push(StorageItem::fromPath($file, $this->disk, false));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return empty collection on error
         }
 
@@ -238,7 +243,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                 }
                 $folders->push(StorageItem::fromPath($dir, $this->disk, true));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return empty collection on error
         }
 
@@ -261,7 +266,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             if ($this->storage()->exists($path)) {
                 return StorageItem::fromPath($path, $this->disk, false);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Item not found
         }
 
@@ -323,7 +328,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                     'children_loaded' => false,
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return empty on error
         }
 
@@ -381,7 +386,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                     'children_loaded' => true,
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return empty on error
         }
 
@@ -436,7 +441,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             ]);
 
             return StorageItem::fromPath($newPath, $this->disk, true);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('FileManager failed to create folder', [
                 'path' => $newPath,
                 'disk' => $this->disk,
@@ -475,7 +480,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             ]);
 
             return StorageItem::fromPath($storedPath, $this->disk, false);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('FileManager failed to upload file', [
                 'filename' => $originalName,
                 'path' => $fullPath,
@@ -518,7 +523,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             ]);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('FileManager failed to rename item', [
                 'old_path' => $oldPath,
                 'new_name' => $newName,
@@ -536,13 +541,13 @@ class StorageAdapter implements FileManagerAdapterInterface
      * @param string $from Source directory path
      * @param string $to Destination directory path
      * @param int $depth Current recursion depth
-     * @throws \RuntimeException If max recursion depth is exceeded
+     * @throws RuntimeException If max recursion depth is exceeded
      */
     protected function copyDirectory(string $from, string $to, int $depth = 0): void
     {
         // Prevent stack overflow from deeply nested directories
         if ($depth >= self::MAX_RECURSION_DEPTH) {
-            throw new \RuntimeException('Maximum directory depth exceeded during copy operation');
+            throw new RuntimeException('Maximum directory depth exceeded during copy operation');
         }
 
         $this->storage()->makeDirectory($to);
@@ -601,7 +606,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             ]);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('FileManager failed to move item', [
                 'old_path' => $oldPath,
                 'new_parent' => $newParentPath,
@@ -635,7 +640,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             ]);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('FileManager failed to delete item', [
                 'path' => $path,
                 'disk' => $this->disk,
@@ -673,7 +678,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             // Check as directory
             $parentDir = dirname($path);
             return in_array($path, $this->storage()->directories($parentDir ?: '.'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -688,7 +693,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                 return null;
             }
 
-            $urlService = app(\MWGuerra\FileManager\Services\FileUrlService::class);
+            $urlService = app(FileUrlService::class);
             $expiration = config('filemanager.streaming.url_expiration', 60);
 
             return $urlService->getPreviewUrl(
@@ -698,7 +703,7 @@ class StorageAdapter implements FileManagerAdapterInterface
                 identifier: $identifier,
                 expirationMinutes: $expiration
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::warning('FileManager: Failed to generate URL for file', [
                 'disk' => $this->disk,
                 'path' => $path,
@@ -731,7 +736,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             }
 
             return $content;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -746,7 +751,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             }
 
             return $this->storage()->readStream($path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -761,7 +766,7 @@ class StorageAdapter implements FileManagerAdapterInterface
             }
 
             return $this->storage()->size($path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

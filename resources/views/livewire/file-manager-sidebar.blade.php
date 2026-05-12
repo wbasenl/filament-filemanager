@@ -1,5 +1,5 @@
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
 @endphp
 <div class="fi-sidebar-nav-filemanager">
     <div class="px-3 py-2">

@@ -11,7 +11,7 @@
 |
 */
 
-use MWGuerra\FileManager\Tests\TestCase;
+use Wbasenl\MwguerraFileManager\Tests\TestCase;
 
 pest()
     ->extend(TestCase::class)

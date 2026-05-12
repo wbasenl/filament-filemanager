@@ -1,7 +1,7 @@
 <?php
 
-use MWGuerra\FileManager\Adapters\DatabaseItem;
-use MWGuerra\FileManager\Models\FileSystemItem;
+use Wbasenl\MwguerraFileManager\Adapters\DatabaseItem;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 
 describe('constructor and model access', function () {
     it('wraps a FileSystemItem model', function () {

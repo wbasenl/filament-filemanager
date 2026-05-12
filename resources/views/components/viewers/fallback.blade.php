@@ -9,7 +9,7 @@ Variables:
 - $fileType: The FileTypeContract instance (optional)
 --}}
 @php
-    use MWGuerra\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
     $url = $url ?? null;
     $item = $item ?? null;
     $fileType = $fileType ?? null;

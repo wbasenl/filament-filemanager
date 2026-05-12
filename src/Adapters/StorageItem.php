@@ -1,9 +1,10 @@
 <?php
 
-namespace MWGuerra\FileManager\Adapters;
+namespace Wbasenl\MwguerraFileManager\Adapters;
 
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
-use MWGuerra\FileManager\FileTypeRegistry;
+use Exception;
+use Illuminate\Support\Facades\Storage;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
 
 /**
  * A Data Transfer Object representing a file or folder from storage.
@@ -44,7 +45,7 @@ class StorageItem implements FileManagerItemInterface
      */
     public static function fromPath(string $path, string $disk = 'public', bool $isDirectory = false): static
     {
-        $storage = \Illuminate\Support\Facades\Storage::disk($disk);
+        $storage = Storage::disk($disk);
         $name = basename($path) ?: '/';
 
         if ($isDirectory) {
@@ -69,7 +70,7 @@ class StorageItem implements FileManagerItemInterface
                 $mimeType = $storage->mimeType($path);
                 $lastModified = $storage->lastModified($path);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Some drivers may not support all operations
         }
 

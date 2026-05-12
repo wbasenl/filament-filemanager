@@ -1,12 +1,14 @@
 <?php
 
-namespace MWGuerra\FileManager\Filament\Pages;
+namespace Wbasenl\MwguerraFileManager\Filament\Pages;
 
 use BackedEnum;
+use Filament\Panel;
 use Illuminate\Contracts\Support\Htmlable;
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\FileManagerPlugin;
+use Throwable;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
 
 /**
  * File System page - shows files directly from storage disk (read-only).
@@ -48,13 +50,13 @@ class FileSystem extends FileManager
     {
         try {
             return FileManagerPlugin::get()->getFileSystemNavigationGroup();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             return config('filemanager.file_system.navigation.group')
                 ?? config('filemanager.file_manager.navigation.group', 'FileManager');
         }
     }
 
-    public static function getSlug(?\Filament\Panel $panel = null): string
+    public static function getSlug(?Panel $panel = null): string
     {
         return 'file-system';
     }

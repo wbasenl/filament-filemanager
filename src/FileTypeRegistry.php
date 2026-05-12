@@ -1,9 +1,9 @@
 <?php
 
-namespace MWGuerra\FileManager;
+namespace Wbasenl\MwguerraFileManager;
 
-use MWGuerra\FileManager\Contracts\FileTypeContract;
-use MWGuerra\FileManager\FileTypes\OtherFileType;
+use Wbasenl\MwguerraFileManager\Contracts\FileTypeContract;
+use Wbasenl\MwguerraFileManager\FileTypes\OtherFileType;
 
 /**
  * Registry for managing file types.

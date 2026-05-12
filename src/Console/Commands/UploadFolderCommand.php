@@ -1,13 +1,16 @@
 <?php
 
-namespace MWGuerra\FileManager\Console\Commands;
+namespace Wbasenl\MwguerraFileManager\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Enums\FileSystemItemType;
-use MWGuerra\FileManager\Enums\FileType;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
+use Wbasenl\MwguerraFileManager\Enums\FileType;
 
 class UploadFolderCommand extends Command
 {
@@ -68,7 +71,7 @@ class UploadFolderCommand extends Command
         // Validate disk exists (use directories() which works with S3-compatible storage)
         try {
             Storage::disk($disk)->directories('');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Disk '{$disk}' is not configured or accessible.");
             $this->error($e->getMessage());
             return self::FAILURE;
@@ -143,7 +146,7 @@ class UploadFolderCommand extends Command
 
             return self::SUCCESS;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ($createDatabase) {
                 DB::rollBack();
             }
@@ -168,9 +171,9 @@ class UploadFolderCommand extends Command
         $files = 0;
         $size = 0;
 
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::SELF_FIRST
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST
         );
 
         foreach ($iterator as $item) {

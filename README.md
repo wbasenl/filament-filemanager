@@ -74,7 +74,7 @@ php artisan filemanager:install
 Register the plugin in your Panel Provider:
 
 ```php
-use MWGuerra\FileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
 
 public function panel(Panel $panel): Panel
 {
@@ -90,11 +90,11 @@ public function panel(Panel $panel): Panel
 Register all components or select only the ones you need:
 
 ```php
-use MWGuerra\FileManager\FileManagerPlugin;
-use MWGuerra\FileManager\Filament\Pages\FileManager;
-use MWGuerra\FileManager\Filament\Pages\FileSystem;
-use MWGuerra\FileManager\Filament\Pages\SchemaExample;
-use MWGuerra\FileManager\Filament\Resources\FileSystemItemResource;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\Filament\Pages\FileManager;
+use Wbasenl\MwguerraFileManager\Filament\Pages\FileSystem;
+use Wbasenl\MwguerraFileManager\Filament\Pages\SchemaExample;
+use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource;
 
 // Register all enabled components (default)
 FileManagerPlugin::make()
@@ -168,8 +168,8 @@ The package provides two embeddable schema components that can be added to any F
 ![File System Embed - Storage Mode](https://raw.githubusercontent.com/mwguerra/filemanager/main/docs/images/File%20System%20%28Storage%20Mode%29%20-%20Minio%20Disk.png)
 
 ```php
-use MWGuerra\FileManager\Schemas\Components\FileManagerEmbed;
-use MWGuerra\FileManager\Schemas\Components\FileSystemEmbed;
+use Wbasenl\MwguerraFileManager\Schemas\Components\FileManagerEmbed;
+use Wbasenl\MwguerraFileManager\Schemas\Components\FileSystemEmbed;
 
 // Database mode (full CRUD)
 FileManagerEmbed::make()
@@ -189,8 +189,8 @@ FileSystemEmbed::make()
 Both embed components support fluent configuration for customizing their appearance:
 
 ```php
-use MWGuerra\FileManager\Schemas\Components\FileManagerEmbed;
-use MWGuerra\FileManager\Schemas\Components\FileSystemEmbed;
+use Wbasenl\FileManager\Schemas\Components\FileManagerEmbed;
+use Wbasenl\FileManager\Schemas\Components\FileSystemEmbed;
 
 FileManagerEmbed::make()
     // Layout options
@@ -342,7 +342,7 @@ FileManagerPlugin::make()
 ### Complete Configuration Example
 
 ```php
-use MWGuerra\FileManager\FileManagerPlugin;
+use Wbasenl\FileManager\FileManagerPlugin;
 use Filament\View\PanelsRenderHook;
 
 public function panel(Panel $panel): Panel
@@ -408,8 +408,8 @@ The file manager uses heroicons by default, but includes fallback SVGs that work
 **Override specific icons:**
 
 ```php
-use MWGuerra\FileManager\FileManagerPlugin;
-use MWGuerra\FileManager\Enums\FileManagerIcon;
+use Wbasenl\FileManager\FileManagerPlugin;
+use Wbasenl\FileManager\Enums\FileManagerIcon;
 
 FileManagerPlugin::make()
     // Override multiple icons at once
@@ -461,7 +461,7 @@ All icons have bundled SVG fallbacks, so the file manager works even without `bl
 **Using icons in your own code:**
 
 ```php
-use MWGuerra\FileManager\Enums\FileManagerIcon;
+use Wbasenl\FileManager\Enums\FileManagerIcon;
 
 // In Blade templates
 {!! FileManagerIcon::Folder->render('w-5 h-5 text-primary-500') !!}

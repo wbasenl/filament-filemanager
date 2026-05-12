@@ -1,14 +1,16 @@
 <?php
 
-namespace MWGuerra\FileManager\Adapters;
+namespace Wbasenl\MwguerraFileManager\Adapters;
 
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
-use MWGuerra\FileManager\Contracts\FileSystemItemInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileSystemItemInterface;
+use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 /**
  * Database adapter for file management.
@@ -256,7 +258,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
             ]);
 
             return $this->wrap($folder);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return 'Failed to create folder: ' . $e->getMessage();
         }
     }
@@ -301,11 +303,11 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                     ]);
 
                     return $this->wrap($item);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // If database insert fails, clean up the uploaded file
                     try {
                         Storage::disk($this->disk)->delete($storedPath);
-                    } catch (\Exception $cleanupEx) {
+                    } catch (Exception $cleanupEx) {
                         Log::warning('Failed to clean up uploaded file after DB error', [
                             'path' => $storedPath,
                             'error' => $cleanupEx->getMessage(),
@@ -314,7 +316,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                     throw $e;
                 }
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to upload file', [
                 'filename' => $originalName,
                 'parentId' => $parentId,
@@ -338,7 +340,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 $lockedModel = $this->model()::where('id', $model->id)->lockForUpdate()->first();
 
                 if (!$lockedModel) {
-                    throw new \Exception('Item was deleted by another process');
+                    throw new Exception('Item was deleted by another process');
                 }
 
                 // Check for duplicate with lock to prevent race conditions
@@ -357,7 +359,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
                 return true;
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to rename item', [
                 'identifier' => $identifier,
                 'newName' => $newName,
@@ -388,7 +390,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 $lockedModel = $this->model()::where('id', $model->id)->lockForUpdate()->first();
 
                 if (!$lockedModel) {
-                    throw new \Exception('Item was deleted by another process');
+                    throw new Exception('Item was deleted by another process');
                 }
 
                 // Get target folder with lock
@@ -426,7 +428,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
                 return true;
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to move item', [
                 'identifier' => $identifier,
                 'newParentPath' => $newParentPath,
@@ -450,7 +452,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 $lockedModel = $this->model()::where('id', $model->id)->lockForUpdate()->first();
 
                 if (!$lockedModel) {
-                    throw new \Exception('Item was deleted by another process');
+                    throw new Exception('Item was deleted by another process');
                 }
 
                 $storagePath = $lockedModel->storage_path;
@@ -463,7 +465,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 if ($isFile && $storagePath) {
                     try {
                         Storage::disk($this->disk)->delete($storagePath);
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         // Log the storage delete failure but don't fail the operation
                         // The database record is already deleted
                         Log::warning('Failed to delete file from storage', [
@@ -475,7 +477,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
                 return true;
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to delete item', [
                 'identifier' => $identifier,
                 'error' => $e->getMessage(),
@@ -511,7 +513,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
         }
 
         try {
-            $urlService = app(\MWGuerra\FileManager\Services\FileUrlService::class);
+            $urlService = app(FileUrlService::class);
             $expiration = config('filemanager.streaming.url_expiration', 60);
 
             return $urlService->getPreviewUrl(
@@ -521,7 +523,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 identifier: $identifier,
                 expirationMinutes: $expiration
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::warning('FileManager: Failed to generate URL for file', [
                 'disk' => $this->disk,
                 'storage_path' => $model->storage_path,
@@ -548,7 +550,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
             }
 
             return $content;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -563,7 +565,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
         try {
             return Storage::disk($this->disk)->readStream($model->storage_path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }
@@ -585,7 +587,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
         if ($model->storage_path) {
             try {
                 return Storage::disk($this->disk)->size($model->storage_path);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return null;
             }
         }

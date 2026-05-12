@@ -1,17 +1,18 @@
 <?php
 
-namespace MWGuerra\FileManager\Livewire;
+namespace Wbasenl\MwguerraFileManager\Livewire;
 
+use Exception;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use MWGuerra\FileManager\Adapters\AdapterFactory;
-use MWGuerra\FileManager\Contracts\FileManagerAdapterInterface;
-use MWGuerra\FileManager\Contracts\FileManagerItemInterface;
-use MWGuerra\FileManager\FileManagerPlugin;
-use MWGuerra\FileManager\Services\AuthorizationService;
+use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
+use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
+use Wbasenl\MwguerraFileManager\FileManagerPlugin;
+use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
 
 /**
  * File Manager Sidebar Livewire component.
@@ -470,7 +471,7 @@ class FileManagerSidebar extends Component
             }
 
             return route('filament.admin.pages.file-manager');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Fallback when routes aren't registered (e.g., in tests or when plugin isn't active)
             if ($mode === 'storage') {
                 return '/admin/file-system';

@@ -1,6 +1,6 @@
 <?php
 
-namespace MWGuerra\FileManager\Traits;
+namespace Wbasenl\MwguerraFileManager\Traits;
 
 /**
  * Detects when Livewire's temporary file upload disk is S3.
