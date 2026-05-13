@@ -515,16 +515,18 @@ class FileManager extends Page
                 $this->expandedFolders[] = $itemId;
             }
         } else {
-            $this->openPreview($itemId);
+            $this->openPreview($itemId, $item);
         }
     }
 
     /**
      * Open preview modal for a file.
      */
-    public function openPreview(string $itemId): void
+    public function openPreview(string $itemId, ?FileManagerItemInterface $item = null): void
     {
-        $item = $this->getAdapter()->getItem($itemId);
+        if ($item === null) {
+            $item = $this->getAdapter()->getItem($itemId);
+        }
 
         if (!$item || $item->isFolder()) {
             return;
@@ -711,6 +713,7 @@ class FileManager extends Page
         $this->itemToMoveId = $itemId;
         $this->itemsToMove = [];
         $this->moveTargetPath = null;
+        $this->closePreview();
         $this->dispatch('open-modal', id: 'move-item-modal');
     }
 
