@@ -62,7 +62,6 @@ Variables:
         @endif
     </div>
 
-    {{-- Image --}}
     <img
         x-ref="previewImage"
         x-show="loaded && !error"
@@ -70,7 +69,7 @@ Variables:
         src="{{ $url }}"
         alt="{{ $item?->getName() ?? 'Image preview' }}"
         class="max-w-full max-h-[65vh] object-contain rounded"
-        x-on:load="loaded = true; loading = false"
+        x-on:load="loaded = true; loading = false;"
         x-on:error="error = true; loading = false"
     />
 </div>

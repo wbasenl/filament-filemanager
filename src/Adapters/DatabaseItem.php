@@ -2,6 +2,7 @@
 
 namespace Wbasenl\MwguerraFileManager\Adapters;
 
+use Illuminate\Support\Facades\Storage;
 use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
 use Wbasenl\MwguerraFileManager\Contracts\FileSystemItemInterface;
 
@@ -101,6 +102,12 @@ class DatabaseItem implements FileManagerItemInterface
 
     public function getThumbnail(): ?string
     {
+        if ($this->model->thumbnail !== null &&
+            filter_var($this->model->thumbnail, FILTER_VALIDATE_URL) === false) {
+            return Storage::disk(config('filemanager.upload.disk', 'public'))
+                ->temporaryUrl($this->model->thumbnail, now()->addMinutes(30));
+        }
+
         return $this->model->thumbnail;
     }
 
@@ -148,6 +155,7 @@ class DatabaseItem implements FileManagerItemInterface
             'path' => $this->getPath(),
             'parent_path' => $this->getParentPath(),
             'parent_id' => $this->model->parent_id,
+            'website_id' => $this->model->website_id,
             'is_folder' => $this->isFolder(),
             'is_file' => $this->isFile(),
             'size' => $this->getSize(),

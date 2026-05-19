@@ -1,6 +1,7 @@
 {{-- File/Folder Card for Grid View --}}
+{{-- $item komt uit $this-items: content-area.blade.php --}}
 @php
-    use Wbasenl\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
     $itemId = $item->getIdentifier();
     $itemName = $item->getName();
     $isReadOnly = $isReadOnly ?? false;
@@ -104,18 +105,30 @@
 
                     <x-filament::dropdown.list>
                         <x-filament::dropdown.list.item
-                            icon="heroicon-o-arrow-right-circle"
+                            icon="heroicon-o-{{ $item->isImage() ? 'photo' : 'document' }}"
                             x-on:click.stop="close"
-                            wire:click="openMoveDialog('{{ $itemId }}')"
+                            wire:click="openEditDialog('{{ $itemId }}')"
                         >
-                            Move
+                            @if(!$item->isImage())
+                                {{  __('Vervangen') }}
+                            @else
+                                {{  __('Bewerken / Vervangen') }}
+                            @endif
+
                         </x-filament::dropdown.list.item>
                         <x-filament::dropdown.list.item
                             icon="heroicon-o-pencil"
                             x-on:click.stop="close"
                             wire:click="openRenameDialog('{{ $itemId }}')"
                         >
-                            Rename
+                            {{  __('Naam wijzigen') }}
+                        </x-filament::dropdown.list.item>
+                        <x-filament::dropdown.list.item
+                            icon="heroicon-o-arrow-right-circle"
+                            x-on:click.stop="close"
+                            wire:click="openMoveDialog('{{ $itemId }}')"
+                        >
+                            {{  __('Verplaatsen') }}
                         </x-filament::dropdown.list.item>
                         <x-filament::dropdown.list.item
                             icon="heroicon-o-trash"
@@ -124,7 +137,7 @@
                             wire:click="deleteItem('{{ $itemId }}')"
                             wire:confirm="Are you sure you want to delete this item?"
                         >
-                            Delete
+                            {{  __('Verwijderen') }}
                         </x-filament::dropdown.list.item>
                     </x-filament::dropdown.list>
                 </x-filament::dropdown>

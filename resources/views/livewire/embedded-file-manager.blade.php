@@ -1,5 +1,5 @@
 @php
-    use Wbasenl\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
 @endphp
 <div class="fi-embedded-file-manager border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden" style="height: {{ $height }};">
     @once
@@ -384,7 +384,7 @@
         <x-slot name="heading">Rename Item</x-slot>
         <x-slot name="description">
             @if($this->itemToRename)
-                Rename "{{ $this->itemToRename->getName() }}"
+                Rename "{{ $this->itemToRename->getName() }}" (embedded-file-manager)
             @else
                 Enter a new name for this item
             @endif

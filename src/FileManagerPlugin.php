@@ -94,19 +94,19 @@ class FileManagerPlugin implements Plugin
     // Schema Example Page Configuration
     // =========================================================================
 
-    protected bool $schemaExampleEnabled = false;
+    protected bool $schemaExampleEnabled = true;
 
     // =========================================================================
     // Embed Config Test Page Configuration (for E2E testing)
     // =========================================================================
 
-    protected bool $embedConfigTestEnabled = false;
+    protected bool $embedConfigTestEnabled = true;
 
     // =========================================================================
     // FileSystemItem Resource Configuration
     // =========================================================================
 
-    protected bool $fileSystemItemResourceEnabled = false;
+    protected bool $fileSystemItemResourceEnabled = true;
 
     // =========================================================================
     // Icon Configuration

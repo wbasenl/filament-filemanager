@@ -1,6 +1,6 @@
 {{-- Recursive folder tree component --}}
 @php
-    use Wbasenl\FileManager\Enums\FileManagerIcon;
+    use Wbasenl\MwguerraFileManager\Enums\FileManagerIcon;
     $isReadOnly = $isReadOnly ?? false;
 @endphp
 @foreach($folders as $folder)

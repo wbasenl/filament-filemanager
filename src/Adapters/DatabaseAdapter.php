@@ -7,9 +7,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
 use Wbasenl\MwguerraFileManager\Contracts\FileManagerItemInterface;
 use Wbasenl\MwguerraFileManager\Contracts\FileSystemItemInterface;
+use Wbasenl\MwguerraFileManager\Models\FileSystemItem;
 use Wbasenl\MwguerraFileManager\Services\FileUrlService;
 
 /**
@@ -23,12 +25,15 @@ class DatabaseAdapter implements FileManagerAdapterInterface
     protected string $modelClass;
     protected string $disk;
     protected string $directory;
+    protected string $websiteId;
 
     public function __construct(?string $modelClass = null, ?string $disk = null, ?string $directory = null)
     {
         $this->modelClass = $modelClass ?? config('filemanager.model');
         $this->disk = $disk ?? config('filemanager.upload.disk', 'public');
         $this->directory = $directory ?? config('filemanager.upload.directory', 'uploads');
+        $this->websiteId = Auth()->user()->website_id;
+        $this->directory .= "/" . $this->websiteId;
     }
 
     /**
@@ -123,6 +128,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
         foreach ($segments as $segment) {
             $folder = $this->model()::where('type', 'folder')
                 ->where('parent_id', $parentId)
+                ->where('website_id', $this->websiteId)
                 ->where('name', $segment)
                 ->first(['id']);
 
@@ -139,7 +145,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
     public function getItems(?string $path = null): Collection
     {
         $parentId = $this->pathToFolderId($path);
-        $items = $this->model()::getItemsInFolder($parentId);
+        $items = $this->model()::getItemsInFolder($parentId, $this->websiteId);
 
         return $this->wrapCollection($items);
     }
@@ -150,6 +156,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
         $folders = $this->model()::where('type', 'folder')
             ->where('parent_id', $parentId)
+            ->where('website_id', $this->websiteId)
             ->orderBy('name')
             ->get();
 
@@ -188,12 +195,14 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
         $folders = $this->model()::where('type', 'folder')
             ->where('parent_id', $parentId)
+            ->where('website_id', $this->websiteId)
             ->orderBy('name')
             ->get();
 
         return $folders->map(function ($folder) {
             $hasChildren = $this->model()::where('type', 'folder')
                 ->where('parent_id', $folder->id)
+                ->where('website_id', $this->websiteId)
                 ->exists();
 
             return [
@@ -243,6 +252,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
         // Check for duplicate
         $exists = $this->model()::where('parent_id', $parentId)
+            ->where('website_id', $this->websiteId)
             ->where('name', $name)
             ->exists();
 
@@ -255,6 +265,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 'name' => $name,
                 'type' => 'folder',
                 'parent_id' => $parentId,
+                'website_id' => $this->websiteId,
             ]);
 
             return $this->wrap($folder);
@@ -276,6 +287,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
             return DB::transaction(function () use ($file, $parentId, $originalName, $extension, $size, $mimeType) {
                 // Check for duplicate with lock to prevent race conditions
                 $exists = $this->model()::where('parent_id', $parentId)
+                    ->where('website_id', $this->websiteId)
                     ->where('name', $originalName)
                     ->lockForUpdate()
                     ->exists();
@@ -288,6 +300,8 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 // Store file first
                 $storedPath = $file->store($this->directory, $this->disk);
 
+
+
                 try {
                     // Determine file type
                     $fileType = $this->model()::determineFileType($mimeType);
@@ -298,9 +312,14 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                         'type' => 'file',
                         'file_type' => $fileType,
                         'parent_id' => $parentId,
+                        'website_id' => $this->websiteId,
                         'size' => $size,
                         'storage_path' => $storedPath,
                     ]);
+
+                    if ($item instanceof FileSystemItem && $item->isImage()) {
+                        $this->createThumbnail($item);
+                    }
 
                     return $this->wrap($item);
                 } catch (Exception $e) {
@@ -320,11 +339,28 @@ class DatabaseAdapter implements FileManagerAdapterInterface
             Log::error('Failed to upload file', [
                 'filename' => $originalName,
                 'parentId' => $parentId,
+                'websiteId' => $this->websiteId,
                 'error' => $e->getMessage(),
             ]);
             return 'Failed to upload file: ' . $e->getMessage();
         }
     }
+
+
+    public function createThumbnail(FileSystemItem $item)
+    {
+        $disk = Storage::disk($this->disk);
+        $image = $disk->get($item->storage_path);
+        $path = str_replace($this->websiteId, $this->websiteId . '/thumbs', $item->storage_path);
+        if (! $disk->exists(dirname($path))) {
+
+            $disk->makeDirectory(dirname($path));
+        }
+        Image::decode($image)->resize(250, 140)->save($disk->path($path));
+        $item->update(['thumbnail' => $path]);
+        $item->save();
+    }
+
 
     public function rename(string $identifier, string $newName): bool|string
     {
@@ -337,7 +373,10 @@ class DatabaseAdapter implements FileManagerAdapterInterface
         try {
             return DB::transaction(function () use ($model, $newName) {
                 // Lock the row for update to prevent concurrent modifications
-                $lockedModel = $this->model()::where('id', $model->id)->lockForUpdate()->first();
+                $lockedModel = $this->model()::where('id', $model->id)
+                    ->where('website_id', $this->websiteId)
+                    ->lockForUpdate()
+                    ->first();
 
                 if (!$lockedModel) {
                     throw new Exception('Item was deleted by another process');
@@ -345,6 +384,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
                 // Check for duplicate with lock to prevent race conditions
                 $exists = $this->model()::where('parent_id', $lockedModel->parent_id)
+                    ->where('website_id', $this->websiteId)
                     ->where('name', $newName)
                     ->where('id', '!=', $lockedModel->id)
                     ->lockForUpdate()
@@ -387,7 +427,10 @@ class DatabaseAdapter implements FileManagerAdapterInterface
         try {
             return DB::transaction(function () use ($model, $newParentId) {
                 // Lock the row for update to prevent concurrent modifications
-                $lockedModel = $this->model()::where('id', $model->id)->lockForUpdate()->first();
+                $lockedModel = $this->model()::where('id', $model->id)
+                    ->where('website_id', $this->websiteId)
+                    ->lockForUpdate()
+                    ->first();
 
                 if (!$lockedModel) {
                     throw new Exception('Item was deleted by another process');
@@ -396,7 +439,10 @@ class DatabaseAdapter implements FileManagerAdapterInterface
                 // Get target folder with lock
                 $targetFolder = null;
                 if ($newParentId) {
-                    $targetFolder = $this->model()::where('id', $newParentId)->lockForUpdate()->first();
+                    $targetFolder = $this->model()::where('id', $newParentId)
+                        ->where('website_id', $this->websiteId)
+                        ->lockForUpdate()
+                        ->first();
                     if (!$targetFolder) {
                         return 'Target folder not found';
                     }
@@ -414,6 +460,7 @@ class DatabaseAdapter implements FileManagerAdapterInterface
 
                 // Check for duplicate name in target folder with lock
                 $exists = $this->model()::where('parent_id', $newParentId)
+                    ->where('website_id', $this->websiteId)
                     ->where('name', $lockedModel->name)
                     ->where('id', '!=', $lockedModel->id)
                     ->lockForUpdate()
@@ -449,7 +496,10 @@ class DatabaseAdapter implements FileManagerAdapterInterface
         try {
             return DB::transaction(function () use ($model) {
                 // Lock the row for update to prevent concurrent modifications
-                $lockedModel = $this->model()::where('id', $model->id)->lockForUpdate()->first();
+                $lockedModel = $this->model()::where('id', $model->id)
+                    ->where('website_id', $this->websiteId)
+                    ->lockForUpdate()
+                    ->first();
 
                 if (!$lockedModel) {
                     throw new Exception('Item was deleted by another process');

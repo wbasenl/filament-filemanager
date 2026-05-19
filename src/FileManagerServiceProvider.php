@@ -24,6 +24,7 @@ use Wbasenl\MwguerraFileManager\FileTypes\VideoFileType;
 use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileManager;
 use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileSystem;
 use Wbasenl\MwguerraFileManager\Livewire\FileManagerSidebar;
+use Wbasenl\MwguerraFileManager\Livewire\PreviewUpload;
 use Wbasenl\MwguerraFileManager\Policies\FileSystemItemPolicy;
 use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
 use Wbasenl\MwguerraFileManager\Services\FileSecurityService;
@@ -55,6 +56,7 @@ class FileManagerServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'create_file_system_items_table',
                 'add_unique_constraint_to_file_system_items_table',
+                'add_website_id_to_file_system_item'
             ])
             ->runsMigrations()
             ->hasCommands([
@@ -103,6 +105,8 @@ class FileManagerServiceProvider extends PackageServiceProvider
         $this->registerLivewireComponents();
         $this->registerPublishables();
         $this->registerRoutes();
+
+        Livewire::component('preview-upload', PreviewUpload::class);
     }
 
     /**
@@ -120,7 +124,7 @@ class FileManagerServiceProvider extends PackageServiceProvider
     {
         FilamentAsset::register([
             Css::make('filemanager', __DIR__ . '/../resources/dist/filemanager.css'),
-        ], 'mwguerra/filemanager');
+        ], 'wbasenl/mwguerrafilemanager');
     }
 
     /**
@@ -155,7 +159,7 @@ class FileManagerServiceProvider extends PackageServiceProvider
     protected function registerViewComponents(): void
     {
         // Register viewer components with the filemanager namespace
-        Blade::componentNamespace('MWGuerra\\FileManager\\View\\Components', 'filemanager');
+        Blade::componentNamespace('Wbasenl\\MwguerraFileManager\\View\\Components', 'filemanager');
     }
 
     /**

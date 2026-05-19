@@ -3,10 +3,20 @@
 namespace Wbasenl\MwguerraFileManager\Filament\Pages;
 
 use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Jdkweb\FilamentFileManager\Models\Media;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithFileUploads;
@@ -21,10 +31,47 @@ use Wbasenl\MwguerraFileManager\Services\AuthorizationService;
 use Wbasenl\MwguerraFileManager\Services\FileSecurityService;
 use Wbasenl\MwguerraFileManager\Traits\DetectsS3TempUploads;
 
-class FileManager extends Page
+class FileManager extends Page implements HasForms, HasActions
 {
     use DetectsS3TempUploads;
     use WithFileUploads;
+
+    use InteractsWithActions;
+    use InteractsWithForms;
+
+    // State properties - using string identifiers for flexibility
+    #[Url(as: 'path')]
+    public ?string $currentPath = null;
+    public string $viewMode = 'grid';
+    public array $selectedItems = [];
+    public array $expandedFolders = [];
+
+    /**
+     * Cached folder children for lazy loading (storage mode).
+     * Keys are folder IDs, values are arrays of children.
+     */
+    public array $folderChildrenCache = [];
+
+    // Form properties
+    public string $newFolderName = '';
+    public ?string $moveTargetPath = null;
+    public ?string $itemToMoveId = null;
+    public array $itemsToMove = [];
+
+    // Subfolder creation properties
+    public ?string $subfolderParentPath = null;
+    public string $subfolderName = '';
+
+    // Rename properties
+    public ?string $itemToRenameId = null;
+    public string $renameItemName = '';
+
+    // Upload properties
+    public array $uploadedFiles = [];
+    public $uploadedFile = null; // Single file upload (when S3 temp disk)
+
+    // Preview properties
+    public ?string $previewItemId = null;
 
     protected string $view = 'filemanager::filament.pages.file-manager';
 
@@ -100,40 +147,6 @@ class FileManager extends Page
     {
         return app(AuthorizationService::class);
     }
-
-    // State properties - using string identifiers for flexibility
-    #[Url(as: 'path')]
-    public ?string $currentPath = null;
-    public string $viewMode = 'grid';
-    public array $selectedItems = [];
-    public array $expandedFolders = [];
-
-    /**
-     * Cached folder children for lazy loading (storage mode).
-     * Keys are folder IDs, values are arrays of children.
-     */
-    public array $folderChildrenCache = [];
-
-    // Form properties
-    public string $newFolderName = '';
-    public ?string $moveTargetPath = null;
-    public ?string $itemToMoveId = null;
-    public array $itemsToMove = [];
-
-    // Subfolder creation properties
-    public ?string $subfolderParentPath = null;
-    public string $subfolderName = '';
-
-    // Rename properties
-    public ?string $itemToRenameId = null;
-    public string $renameItemName = '';
-
-    // Upload properties
-    public array $uploadedFiles = [];
-    public $uploadedFile = null; // Single file upload (when S3 temp disk)
-
-    // Preview properties
-    public ?string $previewItemId = null;
 
     /**
      * Get the adapter for the current mode.
@@ -298,6 +311,10 @@ class FileManager extends Page
 
     /**
      * Get items in the current folder.
+     *
+     * Livewire: get[NAME]Property() in de blade is het resultaat aan te roepen via $this->[NAME]
+     *
+     * In dit geval $this->items
      */
     public function getItemsProperty(): Collection
     {
@@ -493,10 +510,89 @@ class FileManager extends Page
         return in_array($itemId, $this->selectedItems);
     }
 
+    protected function editItemAction(): Action
+    {
+        return Action::make('editItem')
+            ->label(fn ($arguments) => $arguments['item']->isImage() ? __('Bewerken/vervangen') : __('Vervangen'))
+            ->modalSubmitActionLabel(__('Opslaan'))
+            ->schema([
+                Hidden::make('name'),
+                FileUpload::make('image')
+                    ->id('image-edit')
+                    ->hiddenLabel()
+                    ->image()
+                    ->imageEditor()
+//                    ->imageEditorAspectRatioOptions(['4:3', '16:9', '1:1'])
+//                    ->imageAspectRatio('1:10000')
+//                    ->automaticallyOpenImageEditorForAspectRatio(true)
+                    ->multiple(false)
+                    ->disk('local')
+                    ->directory(env('FILEMANAGER_UPLOAD_DIR', 'uploads'))
+                    ->afterStateHydrated(function ($livewire, Get $get)  {
+                         $livewire->dispatch('imageLoaded', ['name' => $get('name')]);
+                    })
+            ])
+            ->fillForm(function (array $arguments): array {
+                $item = $arguments['item'];
+                return [
+                    'name' => $item->name,
+                    'image' => $item?->storage_path
+                ];
+            })
+            ->extraModalFooterActions(fn (Action $action): array => [
+                $action->makeModalAction('openEditor')
+                    ->label(__("Edit"))
+                    ->color('gray')
+                    ->actionJs(<<<'JS'
+                        document.querySelector('#image-edit .filepond--action-edit-item')?.click();
+                    JS)
+                    ->icon('heroicon-o-pencil'),
+                $action->makeModalAction('replaceImage')
+                    ->label(__("Vervang"))
+                    ->color('gray')
+                    ->actionJs(<<<'JS'
+                        document.querySelector('#image-edit .filepond--action-remove-item')?.click();
+                    JS)
+                    ->icon('heroicon-o-x-mark'),
+            ])
+            ->action(fn (array $data, array $arguments) => $this->handleEditDialog($data, $arguments));
+    }
+
+    public function openEditDialog(string $itemId)
+    {
+        if (($item = $this->getAdapter()->getItem($itemId)) === null) {
+            return;
+        }
+
+        $this->mountAction('editItem', ['item' => $item->getModel() ]);
+    }
+
+    private function handleEditDialog(array $data, array $arguments)
+    {
+        $item = $arguments['item'];
+        if ($item === null) return;
+
+        $folder = env('FILEMANAGER_UPLOAD_DIR', 'uploads');
+
+        // Rename path
+        if (strpos($data['image'], $item->website_id) === false) {
+            $image = str_replace($folder . "/", $folder . "/" . $item->website_id . "/", $data['image']);
+        }
+        // Vervangen
+        if (basename($item->storage_path) !== basename($data['image'])) {
+            Storage::disk('local')->delete($item->storage_path);
+            Storage::disk('local')->move($data['image'], $item->storage_path);
+        }
+        // Opslaan
+        $item->update(['storage_path' =>  $item->storage_path]);
+        // new thumbnail
+        $this->getAdapter()->createThumbnail($item->first());
+    }
+
     /**
      * Handle item click - navigate for folders, open preview for files.
      */
-    public function handleItemClick(string $itemId, bool $ctrlKey = false): void
+    public function handleItemClick(string $itemId, bool $ctrlKey = false) //: void
     {
         $item = $this->getAdapter()->getItem($itemId);
 

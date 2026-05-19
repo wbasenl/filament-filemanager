@@ -3,6 +3,7 @@
 namespace Wbasenl\MwguerraFileManager\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Wbasenl\MwguerraFileManager\Contracts\FileSystemItemInterface;
 use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
 use Wbasenl\MwguerraFileManager\Enums\FileType;
+use Wbasenl\Users\Support\SuperAdminGate;
 
 /**
  * Default FileSystemItem model for the FileManager package.
@@ -44,7 +46,7 @@ class FileSystemItem extends Model implements FileSystemItemInterface
     protected static function newFactory(): Factory
     {
         // Try to load the package factory - applications should override this
-        $factoryClass = 'MWGuerra\\FileManager\\Database\\Factories\\FileSystemItemFactory';
+        $factoryClass = 'Wbasenl\\MwguerraFileManager\\Database\\Factories\\FileSystemItemFactory';
         if (class_exists($factoryClass)) {
             return $factoryClass::new();
         }
@@ -63,6 +65,7 @@ class FileSystemItem extends Model implements FileSystemItemInterface
         'type',
         'file_type',
         'parent_id',
+        'website_id',
         'size',
         'duration',
         'thumbnail',
@@ -78,6 +81,24 @@ class FileSystemItem extends Model implements FileSystemItemInterface
         'size' => 'integer',
         'duration' => 'integer',
     ];
+
+    public ?string $website_id;
+
+    protected static function booted()
+    {
+        static::retrieved(function (FileSystemItem $item) {
+            $item->website_id = auth()->user()->website_id;
+        });
+
+        static::addGlobalScope('website', function (Builder $builder) {
+            if (auth()->user() !== null && SuperAdminGate::check(auth()->user()) === false) {
+                $builder->where(
+                    'file_system_items.website_id',
+                    auth()->user()->website_id
+                );
+            }
+        });
+    }
 
     /**
      * Get the parent folder relationship.
@@ -335,9 +356,10 @@ class FileSystemItem extends Model implements FileSystemItemInterface
     /**
      * Get items in a folder (by parent_id).
      */
-    public static function getItemsInFolder(?int $parentId = null): Collection
+    public static function getItemsInFolder(?int $parentId = null, ?string $website_id = null): Collection
     {
         return static::where('parent_id', $parentId)
+            ->where('website_id', $website_id)
             ->orderByRaw("CASE WHEN type = '" . FileSystemItemType::Folder->value . "' THEN 0 ELSE 1 END")
             ->orderBy('name')
             ->get();
