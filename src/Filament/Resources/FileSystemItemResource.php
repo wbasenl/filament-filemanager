@@ -2,7 +2,6 @@
 
 namespace Wbasenl\MwguerraFileManager\Filament\Resources;
 
-use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -15,25 +14,32 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Throwable;
+use UnitEnum;
 use Wbasenl\MwguerraFileManager\Enums\FileSystemItemType;
 use Wbasenl\MwguerraFileManager\Enums\FileType;
 use Wbasenl\MwguerraFileManager\Filament\Resources\FileSystemItemResource\Pages;
-use Wbasenl\MwguerraFileManager\FileManagerPlugin;
+use Wbasenl\NavigationGroups\Enums\NavigationGroup;
 
 class FileSystemItemResource extends Resource
 {
     protected static ?string $model = null;
+
+    protected static string|null|UnitEnum $navigationGroup = NavigationGroup::USERS;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Bestands Beheer');
+    }
 
     public static function getModel(): string
     {
         return config('filemanager.model');
     }
 
-    public static function getNavigationIcon(): string|BackedEnum|null
-    {
-        return 'heroicon-o-document-duplicate';
-    }
+//    public static function getNavigationIcon(): string|BackedEnum|null
+//    {
+//        return 'heroicon-o-document-duplicate';
+//    }
 
     public static function getNavigationSort(): ?int
     {
@@ -45,14 +51,14 @@ class FileSystemItemResource extends Resource
         return 'name';
     }
 
-    public static function getNavigationGroup(): ?string
-    {
-        try {
-            return FileManagerPlugin::get()->getFileManagerNavigationGroup();
-        } catch (Throwable) {
-            return config('filemanager.file_manager.navigation.group', 'FileManager');
-        }
-    }
+//    public static function getNavigationGroup(): ?string
+//    {
+//        try {
+//            return FileManagerPlugin::get()->getFileManagerNavigationGroup();
+//        } catch (Throwable) {
+//            return config('filemanager.file_manager.navigation.group', 'FileManager');
+//        }
+//    }
 
     public static function form(Schema $schema): Schema
     {

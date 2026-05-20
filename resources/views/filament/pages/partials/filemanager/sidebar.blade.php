@@ -1,5 +1,5 @@
 @use('Wbasenl\MwguerraFileManager\Enums\FileManagerIcon')
-<aside class="w-64 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 overflow-y-auto">
+<aside class="w-64 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4 overflow-y-auto">
     <h2 class="px-2 text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ $this->getSidebarHeading() }}</h2>
 
     {{-- Root Folder --}}

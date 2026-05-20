@@ -21,7 +21,7 @@
         @endif
     @endif
     x-on:click="$wire.handleItemClick(@js($itemId))"
-    class="group relative cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 transition-all hover:border-primary-500 hover:shadow-lg
+    class="group relative cursor-pointer rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 transition-all hover:border-primary-500 hover:shadow-lg
         {{ $isSelected ? 'ring-2 ring-primary-500 border-primary-500 bg-primary-50 dark:bg-primary-900/20' : '' }}"
     @if(!$isReadOnly):class="{ 'border-primary-500 bg-primary-50 dark:bg-primary-900/20': isDragOver }"@endif
 >
@@ -77,7 +77,7 @@
         {{-- Name and Meta --}}
         <div class="flex items-start justify-between gap-2">
             <div class="flex-1 overflow-hidden">
-                <p class="truncate font-medium text-gray-900 dark:text-white">{{ $itemName }}</p>
+                <p class="truncate font-medium text-sm text-gray-900 dark:text-white w-full">{{ $itemName }}</p>
                 @if($item->isFile())
                     <div class="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                         @if($item->getDuration() && ($item->isVideo() || $item->isAudio()))
@@ -104,18 +104,19 @@
                     </x-slot>
 
                     <x-filament::dropdown.list>
-                        <x-filament::dropdown.list.item
-                            icon="heroicon-o-{{ $item->isImage() ? 'photo' : 'document' }}"
-                            x-on:click.stop="close"
-                            wire:click="openEditDialog('{{ $itemId }}')"
-                        >
-                            @if(!$item->isImage())
-                                {{  __('Vervangen') }}
-                            @else
-                                {{  __('Bewerken / Vervangen') }}
-                            @endif
-
-                        </x-filament::dropdown.list.item>
+                        @if($item->isFile())
+                            <x-filament::dropdown.list.item
+                                icon="heroicon-o-{{ $item->isImage() ? 'photo' : 'document' }}"
+                                x-on:click.stop="close"
+                                wire:click="openEditDialog('{{ $itemId }}')"
+                            >
+                                @if(!$item->isImage())
+                                    {{  __('Vervangen') }}
+                                @else
+                                    {{  __('Bewerken / Vervangen') }}
+                                @endif
+                            </x-filament::dropdown.list.item>
+                        @endif
                         <x-filament::dropdown.list.item
                             icon="heroicon-o-pencil"
                             x-on:click.stop="close"

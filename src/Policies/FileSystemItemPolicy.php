@@ -4,6 +4,8 @@ namespace Wbasenl\MwguerraFileManager\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Wbasenl\Permissions\Enums\Web\Permissions;
+use Wbasenl\Users\Support\SuperAdminGate;
 
 /**
  * Policy for FileSystemItem authorization.
@@ -42,18 +44,24 @@ class FileSystemItemPolicy
             return true;
         }
 
-        // Require authentication by default
         if (!$user) {
             return false;
         }
 
-        // Check for required permission if configured
-        $permission = config('filemanager.authorization.permissions.view_any');
-        if ($permission && method_exists($user, 'can')) {
-            return $user->can($permission);
-        }
+        return SuperAdminGate::check($user) || $user->can(Permissions::FILES_VIEW);
 
-        return true;
+//        // Require authentication by default
+//        if (!$user) {
+//            return false;
+//        }
+//
+//        // Check for required permission if configured
+//        $permission = config('filemanager.authorization.permissions.view_any');
+//        if ($permission && method_exists($user, 'can')) {
+//            return $user->can($permission);
+//        }
+//
+//        return true;
     }
 
     /**
@@ -69,12 +77,18 @@ class FileSystemItemPolicy
             return false;
         }
 
-        $permission = config('filemanager.authorization.permissions.view');
-        if ($permission && method_exists($user, 'can')) {
-            return $user->can($permission);
-        }
+        return SuperAdminGate::check($user) || $user->can(Permissions::FILES_VIEW);
 
-        return true;
+//        if (!$user) {
+//            return false;
+//        }
+//
+//        $permission = config('filemanager.authorization.permissions.view');
+//        if ($permission && method_exists($user, 'can')) {
+//            return $user->can($permission);
+//        }
+//
+//        return true;
     }
 
     /**
@@ -91,12 +105,18 @@ class FileSystemItemPolicy
             return false;
         }
 
-        $permission = config('filemanager.authorization.permissions.create');
-        if ($permission && method_exists($user, 'can')) {
-            return $user->can($permission);
-        }
+        return SuperAdminGate::check($user) || $user->can(Permissions::FILES_CREATE);
 
-        return true;
+//        if (!$user) {
+//            return false;
+//        }
+//
+//        $permission = config('filemanager.authorization.permissions.create');
+//        if ($permission && method_exists($user, 'can')) {
+//            return $user->can($permission);
+//        }
+//
+//        return true;
     }
 
     /**
@@ -113,12 +133,18 @@ class FileSystemItemPolicy
             return false;
         }
 
-        $permission = config('filemanager.authorization.permissions.update');
-        if ($permission && method_exists($user, 'can')) {
-            return $user->can($permission);
-        }
+        return SuperAdminGate::check($user) || $user->can(Permissions::FILES_EDIT);
 
-        return true;
+//        if (!$user) {
+//            return false;
+//        }
+//
+//        $permission = config('filemanager.authorization.permissions.update');
+//        if ($permission && method_exists($user, 'can')) {
+//            return $user->can($permission);
+//        }
+//
+//        return true;
     }
 
     /**
@@ -134,12 +160,14 @@ class FileSystemItemPolicy
             return false;
         }
 
-        $permission = config('filemanager.authorization.permissions.delete');
-        if ($permission && method_exists($user, 'can')) {
-            return $user->can($permission);
-        }
-
-        return true;
+        return SuperAdminGate::check($user) || $user->can(Permissions::FILES_DELETE);
+//
+//        $permission = config('filemanager.authorization.permissions.delete');
+//        if ($permission && method_exists($user, 'can')) {
+//            return $user->can($permission);
+//        }
+//
+//        return true;
     }
 
     /**
@@ -176,12 +204,15 @@ class FileSystemItemPolicy
             return false;
         }
 
-        $permission = config('filemanager.authorization.permissions.delete_any');
-        if ($permission && method_exists($user, 'can')) {
-            return $user->can($permission);
-        }
+        return SuperAdminGate::check($user) || $user->can(Permissions::FILES_DELETE);
 
-        // By default, if user can delete single items, they can bulk delete
-        return $this->delete($user, null);
+//
+//        $permission = config('filemanager.authorization.permissions.delete_any');
+//        if ($permission && method_exists($user, 'can')) {
+//            return $user->can($permission);
+//        }
+//
+//        // By default, if user can delete single items, they can bulk delete
+//        return $this->delete($user, null);
     }
 }

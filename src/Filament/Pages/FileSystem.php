@@ -7,6 +7,7 @@ use Filament\Panel;
 use Illuminate\Contracts\Support\Htmlable;
 use Throwable;
 use Wbasenl\MwguerraFileManager\Adapters\AdapterFactory;
+use Wbasenl\NavigationGroups\Enums\NavigationGroup;
 use Wbasenl\MwguerraFileManager\Contracts\FileManagerAdapterInterface;
 use Wbasenl\MwguerraFileManager\FileManagerPlugin;
 
@@ -46,13 +47,13 @@ class FileSystem extends FileManager
             ?? config('filemanager.file_system.navigation.sort', 2);
     }
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string|\UnitEnum|null
     {
         try {
-            return FileManagerPlugin::get()->getFileSystemNavigationGroup();
+            return FileManagerPlugin::get()->getFileSystemNavigationGroup()
+                ?? NavigationGroup::FILEMANAGER;
         } catch (Throwable) {
-            return config('filemanager.file_system.navigation.group')
-                ?? config('filemanager.file_manager.navigation.group', 'FileManager');
+            return NavigationGroup::FILEMANAGER;
         }
     }
 
