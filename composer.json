@@ -11,7 +11,8 @@
         "upload",
         "media-library"
     ],
-    "license": "MIT",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Marcelo W. Guerra",
