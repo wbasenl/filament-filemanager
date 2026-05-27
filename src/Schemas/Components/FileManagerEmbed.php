@@ -14,6 +14,8 @@ use Wbasenl\MwguerraFileManager\Livewire\EmbeddedFileManager;
  */
 class FileManagerEmbed extends Livewire
 {
+    public bool $isSelector = false;
+
     protected string|Closure $height = '500px';
 
     protected bool|Closure $showHeader = true;
@@ -36,6 +38,11 @@ class FileManagerEmbed extends Livewire
 
     public static function make(Closure|string $component = null, Closure|array $data = []): static
     {
+        /**
+         *  Livewire has __construct($component, $data)
+         *  Set: $this->component
+         *       $this->>data
+         */
         $static = app(static::class, [
             'component' => $component ?? EmbeddedFileManager::class,
             'data' => $data,
@@ -55,6 +62,7 @@ class FileManagerEmbed extends Livewire
     {
         return [
             ...parent::getComponentProperties(),
+            'isSelector' => $this->isSelector,
             'height' => $this->getHeight(),
             'showHeader' => $this->shouldShowHeader(),
             'showSidebar' => $this->shouldShowSidebar(),
@@ -214,8 +222,10 @@ class FileManagerEmbed extends Livewire
     /**
      * Set to compact mode (no header, no sidebar).
      */
-    public function compact(): static
+    public function compact(bool|Closure $hide = true): static
     {
+       if (!$this->evaluate($hide)) return $this->hideHeader();
+
         return $this->hideHeader()->hideSidebar();
     }
 

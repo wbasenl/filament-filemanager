@@ -175,7 +175,7 @@
                     </div>
                 @else
                     {{-- Bulk Selection Management (only for non-read-only mode) --}}
-                    @if(!$this->isReadOnly())
+                    @if(!$this->isReadOnly() && !$this->isSelector)
                         <div class="flex items-center justify-between rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 mb-3">
                             <div class="flex items-center gap-2">
                                 {{-- Select All / Deselect All --}}
@@ -233,7 +233,11 @@
                         {{-- Grid View --}}
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                             @foreach($this->items as $item)
-                                @include('filemanager::livewire.partials.embedded-file-card', ['item' => $item, 'isReadOnly' => $this->isReadOnly()])
+                                @if(!$this->isSelector)
+                                    @include('filemanager::livewire.partials.embedded-file-card', ['item' => $item, 'isReadOnly' => $this->isReadOnly()])
+                                @else
+                                    @include('filemanager::livewire.partials.embedded-file-card-selector', ['item' => $item, 'isReadOnly' => $this->isReadOnly()])
+                                @endif
                             @endforeach
                         </div>
                     @else

@@ -28,6 +28,8 @@ class EmbeddedFileManager extends Component
     use DetectsS3TempUploads;
     use WithFileUploads;
 
+    public bool $isSelector = false;
+
     // Configuration properties (set from schema component)
     public string $height = '500px';
     public bool $showHeader = true;
@@ -284,7 +286,7 @@ class EmbeddedFileManager extends Component
         return count($this->selectedItems) === $this->items->count();
     }
 
-    public function handleItemClick(string $itemId, bool $ctrlKey = false): void
+    public function handleItemClick(string $itemId, bool $ctrlKey = false, bool $select = false): void
     {
         $item = $this->getAdapter()->getItem($itemId);
 
@@ -303,8 +305,26 @@ class EmbeddedFileManager extends Component
                 $this->expandedFolders[] = $itemId;
             }
         } else {
-            $this->openPreview($itemId);
+            if ($select === true) {
+                $this->setSelection($itemId);
+            }
+            else {
+                $this->openPreview($itemId);
+            }
         }
+    }
+
+    public function setSelection(string $itemId)
+    {
+        $item = $this->getAdapter()->getItem($itemId);
+        if (!$item || $item->isFolder()) return;
+
+        // Stuur browser-event met de gewenste gegevens naar hidden submit
+        // file: views/components/hidden-submit-trigger.blade.php
+        $this->dispatch('file-selected', item: json_encode($item->toArray()));
+
+        // Optioneel: direct de modal sluiten (gebeurt ook na submit, maar kan geen kwaad)
+        $this->dispatch('close-modal', id: 'embedded-create-folder-modal-' . $this->getId());
     }
 
     public function openPreview(string $itemId): void
